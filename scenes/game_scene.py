@@ -16,6 +16,8 @@ def create_controller(snake: Snake, fruit: Optional[Fruit]) -> Controller:
 
 class GameScene():
 
+    name = "GAME"
+
     score = 0
 
     def __init__(self, display: pygame.Surface):
@@ -66,3 +68,7 @@ class GameScene():
         self.fruit.draw(self.display)
 
         draw_text(self.display, "Score: {}".format(self.score), WINDOW_WIDTH - 100, 50)
+
+    def cleanup(self):
+
+        pass

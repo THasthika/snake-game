@@ -43,8 +43,14 @@ class Snake:
 
     def self_collide(self):
 
-        if self.body[0] in self.body[1:]:
-            return True
+        position_list = list(map(lambda x: (x.x, x.y), self.body))
+        dictx = {}
+        for i in range(len(position_list)):
+            if not position_list[i] in dictx:
+                dictx[position_list[i]] = 0
+            dictx[position_list[i]] += 1
+            if dictx[position_list[i]] > 1:
+                return True
 
         return False
 
