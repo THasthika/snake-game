@@ -35,7 +35,7 @@ class Button():
 
 
     def update_surface(self):
-        self.surface = self.font.render(self.text, True, self.color if self.focused else (255 - self.color[0], 255 - self.color[1], 255 - self.color[2]))
+        self.surface = self.font.render(self.text, True, self.color if not self.focused else (255 - self.color[0], 255 - self.color[1], 255 - self.color[2]))
         self.rect = self.surface.get_rect()
         self.update_rect_anchor()
 

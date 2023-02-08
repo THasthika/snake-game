@@ -3,7 +3,8 @@ import pygame
 import random
 from enum import Enum
 
-from config import WINDOW_HEIGHT, WINDOW_WIDTH, SCREEN_COLOR, FPS
+from config import WINDOW_HEIGHT, WINDOW_WIDTH, SCREEN_COLOR, FPS, START_SCENE
+import scenes
 from scenes.scene_manager import SceneManager
 from ui.font_manager import FontManager
 
@@ -24,10 +25,9 @@ dt = clock.tick(30)
 
 # scene manager
 scene_manager = SceneManager(display)
+scene_manager.push(scenes.get_scene_cls(scenes.MENU_SCENE)(display))
 
 while running:
-
-    scene = scene_manager.get_active()
 
     for event in pygame.event.get():
 
@@ -37,15 +37,15 @@ while running:
 
         # scene handle event
 
-        scene.handle_event(event)
+        scene_manager.handle_event(event)
 
     # scene update
-    scene.update(dt)
+    scene_manager.update(dt)
 
     display.fill(SCREEN_COLOR)
 
     # scene render
-    scene.render()
+    scene_manager.render()
 
     pygame.display.update()
 

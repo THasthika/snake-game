@@ -1,22 +1,17 @@
 ## Font management class
 
-from typing import Dict, List
 import pygame
-import config
-import scenes
-from scenes.scene import Scene
-
-def get_scene_cls(name: str):
-    if name not in scenes.SCENES:
-        raise Exception("Scene Not Found!")
-    return scenes.SCENES[name]
 
 class SceneManager(object):
 
     _instance = None
+
+    scene_stack = []
+
     # scenes: Dict[str, Scene] = {}
     # scene_stack: List[Scene] = []
-    active_scene: Scene = None
+    # active_scene: Scene = None
+
     display: pygame.surface.Surface
 
     def __init__(self, display: pygame.surface.Surface):
@@ -25,8 +20,6 @@ class SceneManager(object):
         #     self.scenes[k] = scenes.SCENES[k](display)
 
         self.display = display
-
-        self.load_scene(config.START_SCENE)
 
 
     def __new__(cls, display: pygame.surface.Surface):
@@ -37,17 +30,39 @@ class SceneManager(object):
 
         return cls._instance
 
-    def load_scene(self, name: str):
+    def push(self, scene):
 
-        if self.active_scene is not None:
-            self.active_scene.cleanup()
+        if len(self.scene_stack) > 0:
+            self.scene_stack[-1].osbcuring()
 
-        cls = get_scene_cls(name)
-        scene = cls(self.display)
-        scene.setup()
-        self.active_scene = scene
+        self.scene_stack.append(scene)
+        self.scene_stack[-1].setup()
+        
 
-    def get_active(self):
+    def pop(self):
 
-        return self.active_scene
+        if len(self.scene_stack) <= 0:
+            return
+
+        remove_scene = self.scene_stack.pop()
+        remove_scene.cleanup()
+
+        if len(self.scene_stack) > 0:
+            self.scene_stack[-1].revealed()
+
+    def handle_event(self, event):
+
+        for scene in reversed(self.scene_stack):
+            if scene.handle_event(event):
+                break
+
+    def update(self, dt):
+
+        for scene in reversed(self.scene_stack):
+            scene.update(dt)
+
+    def render(self):
+
+        for scene in self.scene_stack:
+            scene.render()
 

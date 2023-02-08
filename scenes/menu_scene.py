@@ -2,39 +2,49 @@
 
 
 import pygame
-from scenes.scene_manager import SceneManager
+import scenes
+from scenes.scene import Scene
 from ui.button import Button
 
 from ui.text import AnchorType, Text
 from util import Vec2
 
 
-class MenuScene:
+class MenuScene(Scene):
 
     name = "MENU"
 
     def __init__(self, display: pygame.Surface):
-
-        self.display = display
+        super().__init__(display)
+        
+        self.should_run = True
 
     def handle_new_game(self):
 
-        print("Moving to new game!")
+        self.scene_manager.push(scenes.get_scene_cls(scenes.GAME_SCENE)(self.display))
 
-        SceneManager(self.display).load_scene("GAME")
+    def exit_game(self):
+
+        pygame.event.post(pygame.event.Event(pygame.QUIT))
 
     def setup(self):
 
-        self.title = Text("Snake Game", color=(0, 255, 0), size=50, pos=Vec2(400, 200), anchor=AnchorType.CENTER)
+        self.title = Text("Snake Game", color=(0, 0, 255), size=50, pos=Vec2(400, 200), anchor=AnchorType.CENTER)
 
-        self.new_game_button = Button("New Game", color=(255, 0, 0), size=30, pos=Vec2(400, 400), anchor=AnchorType.CENTER, on_click=self.handle_new_game)
-        pass
+        self.btn_new_game = Button("New Game", color=(0, 255, 0), size=30, pos=Vec2(400, 400), anchor=AnchorType.CENTER, on_click=self.handle_new_game)
+        self.btn_quit = Button("Quit", color=(255, 0, 0), size=30, pos=Vec2(400, 450), anchor=AnchorType.CENTER, on_click=self.exit_game)
+
+    def osbcuring(self):
+
+        self.should_run = False
 
     def handle_event(self, event: pygame.event.Event):
 
-        self.new_game_button.handle_event(event)
+        if not self.should_run:
+            return
 
-        pass
+        self.btn_new_game.handle_event(event)
+        self.btn_quit.handle_event(event)
 
     # def handle_game_command(self, command: GameCommand):
     #     if command.type == CommandType.DIRECTION:
@@ -42,12 +52,21 @@ class MenuScene:
 
     def update(self, dt):
 
-        pass
+        if not self.should_run:
+            return
 
     def render(self):
+
+        if not self.should_run:
+            return
+
         self.title.render(self.display)
-        self.new_game_button.render(self.display)
-        pass
+        self.btn_new_game.render(self.display)
+        self.btn_quit.render(self.display)
+
+    def revealed(self):
+
+        self.should_run = True
 
     def cleanup(self):
         pass
