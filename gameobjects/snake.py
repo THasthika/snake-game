@@ -1,5 +1,5 @@
 import random
-from typing import Optional
+from typing import Optional, List
 
 from config import max_x_units, max_y_units, SNAKE_COLOR
 from util import Vec2, draw_cell
@@ -8,7 +8,7 @@ from direction import Direction
 
 class Snake:
 
-    body = []
+    body: List[Vec2] = []
     speed = 10 # units per second
     prev_move = 0
     top_speed = 40

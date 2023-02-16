@@ -1,6 +1,6 @@
 from typing import Optional
 import pygame
-from controllers import Controller, AIControllerV1, AIControllerV3, HumanController
+from controllers import Controller, AIControllerV1, AIControllerV2, AIControllerV3, HumanController
 from game_command import CommandType, GameCommand
 
 from gameobjects import Fruit, Snake
@@ -15,7 +15,7 @@ PERSIST_CONTROLLER = True
 
 
 def create_controller(snake: Snake, fruit: Optional[Fruit]) -> Controller:
-    return AIControllerV3(snake, fruit)
+    return AIControllerV2(snake, fruit)
 
 class GameScene(Scene):
 

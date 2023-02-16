@@ -11,89 +11,28 @@ from game_command import CommandType, GameCommand
 from gameobjects import Snake, Fruit
 from util import Vec2
 
-class SearchTree:
+from dataclasses import dataclass, field
 
-    def __init__(self, snake: Snake, fruit: Fruit, depth = 3):
+import heapq
 
-        self.root = TreeNode(snake.body, snake.direction, fruit.pos)
-        
+def guess_score(x: Vec2, y: Vec2):
+    return x.distanceL2(y)
 
-class TreeNode:
-
-    children = []
-    parent = None
-
-    def __str__(self) -> str:
-        return "#Children: {} | Points: {} | Direction: {}".format(len(self.children), self.points, self.direction)
-
-    def __init__(self, snake_body: List[Vec2], direction: Direction, fruit_position: Vec2):
-        
-        snake_head_position = snake_body[0]
-
-        fruit_direction = (fruit_position - snake_head_position).unit_vector()
-        dir_direction = direction.get_vector()
-
-        points = fruit_direction.dot_product(dir_direction)
-
-        self.points = points
-        self.direction = direction
-        self.snake_body = self.update_snake_body(snake_body, direction)
-        self.fruit_position = fruit_position
-        self.children = []
-
-        self.possible_directions = list(filter(lambda x: Direction.get_opposite(direction) != x, [Direction.EAST, Direction.WEST, Direction.NORTH, Direction.SOUTH]))
-
-    def update_snake_body(self, snake_body: List[Vec2], direction: Direction):
-
-        for i in range(len(snake_body) - 1, 0, -1):
-            ## set body of i to i - 1
-            snake_body[i] = snake_body[i-1]
-
-        snake_body[0] += direction.get_vector()
-
-        head_x = snake_body[0].x
-        head_y = snake_body[0].y
-
-        if head_x < 0:
-            head_x = max_x_units
-        elif head_x >= max_x_units:
-            head_x = 0
-        
-        if head_y < 0:
-            head_y = max_y_units
-        elif head_y >= max_y_units:
-            head_y = 0
-
-        snake_body[0] = Vec2(head_x, head_y)
-
-        return snake_body
-
-    def expand_node(self):
-
-        if len(self.children) != 0:
-            return
-
-        max_points = 0
-
-        for dir in self.possible_directions:
-
-            node = TreeNode(self.snake_body, dir, self.fruit_position)
-            node.parent = self
-            self.children.append(node)
-
-            if node.points > max_points:
-                max_points = node.points
-
-        t = self
-        while t is not None:
-            if t.points < max_points:
-                t.points = max_points
-            else:
-                max_points = t.points
-            t = t.parent
+@dataclass(order=True)
+class PrioritizedVec2:
+    f: float
+    g: float
+    h: float
+    item: Vec2=field(compare=False)
 
 
-## AI with tree searching for optimal move
+def get_p_vec2(x:Vec2, y: Vec2, g: float):
+    h = guess_score(x, y)
+    return PrioritizedVec2(h, g, h, x)
+
+ABLE_MOVES = [(-1, 0), (1, 0), (0, 1), (0, -1)]
+
+# AI with A* Search
 class AIControllerV2(Controller):
 
     def __init__(self, snake: Snake, fruit: Optional[Fruit] = None):
@@ -110,9 +49,70 @@ class AIControllerV2(Controller):
     def set_score(self, score):
         self.score = score
 
-    def construct_search_tree(self):
+    def search(self):
 
-        pass
+        node_queue: List[PrioritizedVec2] = []
+
+        parent = {}
+
+        visited_nodes = {}
+
+        heapq.heappush(node_queue, get_p_vec2(self.snake.body[0], self.fruit.get_position(), 0))
+
+        i = 0
+
+        while len(node_queue) > 0:
+
+            current_node = heapq.heappop(node_queue)
+
+            visited_nodes[current_node.item] = current_node.f
+
+            if current_node.item.distanceL1(self.fruit.get_position()) < 1.0:
+                parent[self.fruit.get_position()] = parent[current_node.item]
+                break
+
+            for move in ABLE_MOVES:
+                move_vec = Vec2(*move)
+
+                if i == 0:
+                    if move_vec.dot_product(self.snake.direction.get_opposite().get_vector()) > 0:
+                        continue
+
+                check_pos = current_node.item + move_vec
+                for p in self.snake.body:
+                    if check_pos.distanceL1(p) < 1.0:
+                        continue
+                
+                # valid moves
+                p_node = get_p_vec2(check_pos, self.fruit.get_position(), current_node.g + 1.0)
+                
+                if p_node.item in visited_nodes:
+                    if visited_nodes[p_node.item] < p_node.f:
+                        continue
+
+                heapq.heappush(node_queue, p_node)
+                parent[p_node.item] = current_node.item
+                
+                # if p_node.item in closed:
+
+            i += 1
+
+
+                # heapq.heappush(node_queue, )
+
+        x = self.fruit.get_position()
+        path = [x]
+        while path[-1] != self.snake.body[0]:
+            path.append(parent[x])
+            x = path[-1]
+
+        if len(path) > 1:
+            dir_vec = path[-1] - path[-2]
+            
+            return dir_vec
+        
+        return Vec2(0, 0)
+
 
     ## called on every event
     def handle_event(self, _event: pygame.event.Event) -> Optional[GameCommand]:
@@ -122,12 +122,7 @@ class AIControllerV2(Controller):
     ## called on every frame
     def handle_update(self) -> Optional[GameCommand]:
 
-        head_pos = self.snake.body[0]
-        snake_direction = self.snake.get_direction()
-
-        fruit_pos = self.fruit.pos
-
-        diff = (head_pos - fruit_pos) // 1
+        diff = self.search()
 
         if diff.x == 0 and diff.y == 0:
             return None
