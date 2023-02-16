@@ -17,8 +17,13 @@ class AIControllerV1(Controller):
         self.fruit = fruit
 
     def set_fruit(self, fruit: Fruit):
-
         self.fruit = fruit
+
+    def set_score(self, score):
+        self.score = score
+
+    def set_snake(self, snake):
+        self.snake = snake
 
     ## called on every event
     def handle_event(self, _event: pygame.event.Event) -> Optional[GameCommand]:

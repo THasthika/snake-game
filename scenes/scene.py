@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import Optional
 
 import pygame
 
@@ -7,11 +6,10 @@ from scenes.scene_manager import SceneManager
 
 class Scene(ABC):
 
-    def __init__(self, display: pygame.surface.Surface) -> None:
+    def __init__(self) -> None:
         super().__init__()
 
-        self.display = display
-        self.scene_manager = SceneManager(self.display)
+        self.scene_manager = SceneManager()
 
     @abstractmethod
     def setup(self):
@@ -30,7 +28,7 @@ class Scene(ABC):
         pass
 
     @abstractmethod
-    def render(self):
+    def render(self, display):
         pass
 
     @abstractmethod

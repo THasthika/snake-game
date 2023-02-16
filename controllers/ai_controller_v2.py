@@ -102,8 +102,13 @@ class AIControllerV2(Controller):
         self.fruit = fruit
 
     def set_fruit(self, fruit: Fruit):
-
         self.fruit = fruit
+
+    def set_snake(self, snake):
+        self.snake = snake
+
+    def set_score(self, score):
+        self.score = score
 
     def construct_search_tree(self):
 

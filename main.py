@@ -3,14 +3,12 @@ import pygame
 import random
 from enum import Enum
 
-from config import WINDOW_HEIGHT, WINDOW_WIDTH, SCREEN_COLOR, FPS, START_SCENE
+from config import WINDOW_HEIGHT, WINDOW_WIDTH, SCREEN_COLOR, FPS
 import scenes
 from scenes.scene_manager import SceneManager
 from ui.font_manager import FontManager
 
 from util import init_fonts
-
-from scenes import GameScene, MenuScene
 
 pygame.init()
 
@@ -21,13 +19,13 @@ clock = pygame.time.Clock()
 
 running = True
 
-dt = clock.tick(30)
-
 # scene manager
-scene_manager = SceneManager(display)
-scene_manager.push(scenes.get_scene_cls(scenes.MENU_SCENE)(display))
+scene_manager = SceneManager()
+scene_manager.push(scenes.get_scene_cls(scenes.MENU_SCENE)())
 
 while running:
+
+    dt = clock.tick(FPS) / 1000.0
 
     for event in pygame.event.get():
 
@@ -45,7 +43,7 @@ while running:
     display.fill(SCREEN_COLOR)
 
     # scene render
-    scene_manager.render()
+    scene_manager.render(display)
 
     pygame.display.update()
 

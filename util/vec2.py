@@ -1,33 +1,4 @@
 import math
-import pygame
-
-from config import CELL_SIZE, FONT_SIZE, TEXT_COLOR, SCREEN_COLOR
-
-fonts = {}
-
-def init_fonts():
-    global fonts
-    fonts = {
-        "arial": pygame.font.SysFont("arial", FONT_SIZE)
-    }
-
-def draw_cell(display, pos, color):
-    pygame.draw.rect(display, color,
-        (
-            pos.x * CELL_SIZE,
-            pos.y * CELL_SIZE,
-            CELL_SIZE,
-            CELL_SIZE
-        )
-    )
-
-def draw_text(display, text, x, y, font_name = "arial"):
-    font = fonts[font_name]
-    text_surf = font.render(text, True, TEXT_COLOR)
-    textRect = text_surf.get_rect()
-    textRect.center = (x, y)
-    display.blit(text_surf, textRect)
-
 
 class Vec2:
 

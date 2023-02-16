@@ -8,6 +8,8 @@ from game_command import CommandType, GameCommand
 
 from gameobjects import Snake, Fruit
 
+from config import max_x_units
+
 class HumanController(Controller):
 
     def __init__(self, snake: Snake, fruit: Optional[Fruit] = None):
@@ -16,6 +18,12 @@ class HumanController(Controller):
 
     def set_fruit(self, fruit: Fruit):
         self.fruit = fruit
+
+    def set_snake(self, snake):
+        self.snake = snake
+
+    def set_score(self, score):
+        self.score = score
 
     ## called on every event
     def handle_event(self, event: pygame.event.Event) -> Optional[GameCommand]:
@@ -31,5 +39,7 @@ class HumanController(Controller):
 
     ## called on every frame
     def handle_update(self) -> Optional[GameCommand]:
+        
+        print(self.snake.body)
 
         return None

@@ -11,6 +11,18 @@ class Controller(ABC):
         super().__init__()
 
     @abstractmethod
+    def set_score(self, score):
+        pass
+
+    @abstractmethod
+    def set_fruit(self, fruit):
+        pass
+
+    @abstractmethod
+    def set_snake(self, snake):
+        pass
+
+    @abstractmethod
     def handle_event(self, event: pygame.event.Event) -> Optional[GameCommand]:
         pass
 

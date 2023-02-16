@@ -1,5 +1,5 @@
 from enum import Enum
-from config import TEXT_COLOR
+from config import TEXT_COLOR, DEFAULT_FONT
 from ui.anchor_type import AnchorType
 from ui.font_manager import FontManager
 from util import Vec2
@@ -7,7 +7,7 @@ from util import Vec2
 class Text():
 
     def __init__(self, text: str, font = None, size = 30, pos: Vec2 = Vec2(0, 0), color = TEXT_COLOR, anchor = AnchorType.CENTER):
-        font = font if font is not None else "arial"
+        font = font if font is not None else DEFAULT_FONT
         self.size = size
         self.pos = pos
         self.color = color

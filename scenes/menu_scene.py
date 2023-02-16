@@ -14,14 +14,14 @@ class MenuScene(Scene):
 
     name = "MENU"
 
-    def __init__(self, display: pygame.Surface):
-        super().__init__(display)
+    def __init__(self):
+        super().__init__()
         
         self.should_run = True
 
     def handle_new_game(self):
 
-        self.scene_manager.push(scenes.get_scene_cls(scenes.GAME_SCENE)(self.display))
+        self.scene_manager.push(scenes.get_scene_cls(scenes.GAME_SCENE)())
 
     def exit_game(self):
 
@@ -55,14 +55,14 @@ class MenuScene(Scene):
         if not self.should_run:
             return
 
-    def render(self):
+    def render(self, display: pygame.Surface):
 
         if not self.should_run:
             return
 
-        self.title.render(self.display)
-        self.btn_new_game.render(self.display)
-        self.btn_quit.render(self.display)
+        self.title.render(display)
+        self.btn_new_game.render(display)
+        self.btn_quit.render(display)
 
     def revealed(self):
 

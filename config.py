@@ -15,4 +15,4 @@ TEXT_COLOR = (255, 255, 255)
 max_x_units = WINDOW_WIDTH // CELL_SIZE
 max_y_units = WINDOW_HEIGHT // CELL_SIZE
 
-START_SCENE = "MENU"
+DEFAULT_FONT = "assets/Sharp Retro.ttf"

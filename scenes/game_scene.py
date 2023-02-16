@@ -1,6 +1,6 @@
 from typing import Optional
 import pygame
-from controllers import Controller, AIControllerV1
+from controllers import Controller, AIControllerV1, AIControllerV3, HumanController
 from game_command import CommandType, GameCommand
 
 from gameobjects import Fruit, Snake
@@ -11,23 +11,21 @@ from util import draw_text
 
 from config import WINDOW_WIDTH
 
+PERSIST_CONTROLLER = True
+
 
 def create_controller(snake: Snake, fruit: Optional[Fruit]) -> Controller:
-    return AIControllerV1(snake, fruit)
+    return AIControllerV3(snake, fruit)
 
 class GameScene(Scene):
-
-    name = "GAME"
 
     score = 0
     is_paused = False
     is_quitting = False
 
-    def __init__(self, display: pygame.Surface):
+    def __init__(self):
 
-        super().__init__(display)
-
-        self.display = display
+        super().__init__()
 
     def setup(self):
 
@@ -45,7 +43,7 @@ class GameScene(Scene):
             return
 
         if event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE:
-            self.scene_manager.push(scenes.get_scene_cls(scenes.PAUSE_GAME_SCENE)(self.display, self))
+            self.scene_manager.push(scenes.get_scene_cls(scenes.PAUSE_GAME_SCENE)(self))
 
         c = self.controller.handle_event(event)
         if c is not None:
@@ -73,7 +71,10 @@ class GameScene(Scene):
         if self.snake.self_collide():
             # new snake needed
             self.snake = Snake()
-            self.controller = create_controller(self.snake, self.fruit)
+            if PERSIST_CONTROLLER:
+                self.controller.set_snake(self.snake)
+            else:
+                self.controller = create_controller(self.snake, self.fruit)
             self.score = 0
 
         if self.snake.check_collision(self.fruit):
@@ -83,13 +84,15 @@ class GameScene(Scene):
             self.score += 1
             self.controller.set_fruit(self.fruit)
 
-    def render(self):
+        self.controller.set_score(self.score)
 
-        self.snake.draw(self.display)
+    def render(self, display: pygame.Surface):
 
-        self.fruit.draw(self.display)
+        self.snake.draw(display)
 
-        draw_text(self.display, "Score: {}".format(self.score), WINDOW_WIDTH - 100, 50)
+        self.fruit.draw(display)
+
+        draw_text(display, "Score: {}".format(self.score), WINDOW_WIDTH - 100, 50)
 
     def revealed(self):
 

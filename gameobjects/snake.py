@@ -59,7 +59,7 @@ class Snake:
         self.prev_move += dt
 
         # calculate if a move is needed to be made by the snake
-        if (self.prev_move / 1000) < (1 / self.speed):
+        if (self.prev_move) < (1 / self.speed):
             return
 
         self.prev_move = 0

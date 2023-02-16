@@ -12,17 +12,15 @@ class SceneManager(object):
     # scene_stack: List[Scene] = []
     # active_scene: Scene = None
 
-    display: pygame.surface.Surface
-
-    def __init__(self, display: pygame.surface.Surface):
+    def __init__(self):
 
         # for k in scenes.SCENES:
         #     self.scenes[k] = scenes.SCENES[k](display)
+        
+        pass
 
-        self.display = display
 
-
-    def __new__(cls, display: pygame.surface.Surface):
+    def __new__(cls):
         if cls._instance is None:
             
             print("Creating SceneManager class!")
@@ -61,8 +59,8 @@ class SceneManager(object):
         for scene in reversed(self.scene_stack):
             scene.update(dt)
 
-    def render(self):
+    def render(self, display: pygame.surface.Surface):
 
         for scene in self.scene_stack:
-            scene.render()
+            scene.render(display)
 

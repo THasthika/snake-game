@@ -11,3 +11,6 @@ A simple implementation of the classic Snake Game with PyGame.
  - Human and AI Controllers
  - Custom UI Elements (Text, Button)
  - (Pending) RL Implementation of an AI controller
+
+
+- A* Path Finding with Panelty?
