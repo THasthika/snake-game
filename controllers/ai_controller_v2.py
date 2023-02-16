@@ -59,6 +59,7 @@ class AIControllerV2(Controller):
 
         heapq.heappush(node_queue, get_p_vec2(self.snake.body[0], self.fruit.get_position(), 0))
 
+        max_checks = 1000
         i = 0
 
         while len(node_queue) > 0:
@@ -77,11 +78,16 @@ class AIControllerV2(Controller):
                 if i == 0:
                     if move_vec.dot_product(self.snake.direction.get_opposite().get_vector()) > 0:
                         continue
+                    
+                valid_move = True
 
                 check_pos = current_node.item + move_vec
-                for p in self.snake.body:
+                for p in self.snake.body[1:]:
                     if check_pos.distanceL1(p) < 1.0:
-                        continue
+                        valid_move = False
+
+                if not valid_move:
+                    continue
                 
                 # valid moves
                 p_node = get_p_vec2(check_pos, self.fruit.get_position(), current_node.g + 1.0)
@@ -97,10 +103,16 @@ class AIControllerV2(Controller):
 
             i += 1
 
+            if max_checks < i:
+                break
+
 
                 # heapq.heappush(node_queue, )
 
         x = self.fruit.get_position()
+        if x not in parent:
+            x = min(visited_nodes.items(), key=lambda x: x[1])[0]
+
         path = [x]
         while path[-1] != self.snake.body[0]:
             path.append(parent[x])
@@ -108,7 +120,6 @@ class AIControllerV2(Controller):
 
         if len(path) > 1:
             dir_vec = path[-1] - path[-2]
-            
             return dir_vec
         
         return Vec2(0, 0)

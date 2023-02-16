@@ -9,9 +9,11 @@ from direction import Direction
 class Snake:
 
     body: List[Vec2] = []
-    speed = 10 # units per second
+    speed = 30 # units per second
     prev_move = 0
     top_speed = 40
+
+    prev_direction: Direction
 
     def __init__(self):
         
@@ -20,6 +22,7 @@ class Snake:
 
         d_rand = random.randint(1, 4)
         self.direction = Direction(d_rand)
+        self.prev_direction = self.direction
 
         self.body = [Vec2(x_rand, y_rand)]
 
@@ -31,7 +34,7 @@ class Snake:
     def set_direction(self, dir: Direction):
 
         ## check if direction change is possible
-        if self.direction == Direction.get_opposite(dir):
+        if self.direction == Direction.get_opposite(dir) or self.prev_direction == Direction.get_opposite(dir):
             return
 
         self.direction = dir
@@ -90,6 +93,8 @@ class Snake:
             head_y = 0
 
         self.body[0] = Vec2(head_x, head_y)
+
+        self.prev_direction = self.direction
 
     def check_collision(self, fruit):
 
