@@ -1,5 +1,6 @@
 import math
 
+
 class Vec2:
 
     x = 0

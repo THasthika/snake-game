@@ -1,6 +1,6 @@
-## Font management class
-
+# Font management class
 import pygame
+
 
 class SceneManager(object):
 
@@ -16,13 +16,12 @@ class SceneManager(object):
 
         # for k in scenes.SCENES:
         #     self.scenes[k] = scenes.SCENES[k](display)
-        
-        pass
 
+        pass
 
     def __new__(cls):
         if cls._instance is None:
-            
+
             print("Creating SceneManager class!")
             cls._instance = super(SceneManager, cls).__new__(cls)
 
@@ -35,7 +34,6 @@ class SceneManager(object):
 
         self.scene_stack.append(scene)
         self.scene_stack[-1].setup()
-        
 
     def pop(self):
 
@@ -63,4 +61,3 @@ class SceneManager(object):
 
         for scene in self.scene_stack:
             scene.render(display)
-

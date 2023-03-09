@@ -1,6 +1,5 @@
 
 
-
 import pygame
 import scenes
 from scenes.scene import Scene
@@ -16,7 +15,7 @@ class MenuScene(Scene):
 
     def __init__(self):
         super().__init__()
-        
+
         self.should_run = True
 
     def handle_new_game(self):
@@ -29,10 +28,16 @@ class MenuScene(Scene):
 
     def setup(self):
 
-        self.title = Text("Snake Game", color=(0, 0, 255), size=50, pos=Vec2(400, 200), anchor=AnchorType.CENTER)
+        self.title = Text("Snake Game",
+                          color=(0, 0, 255), size=50,
+                          pos=Vec2(400, 200), anchor=AnchorType.CENTER)
 
-        self.btn_new_game = Button("New Game", color=(0, 255, 0), size=30, pos=Vec2(400, 400), anchor=AnchorType.CENTER, on_click=self.handle_new_game)
-        self.btn_quit = Button("Quit", color=(255, 0, 0), size=30, pos=Vec2(400, 450), anchor=AnchorType.CENTER, on_click=self.exit_game)
+        self.btn_new_game = Button("New Game", color=(0, 255, 0),
+                                   size=30, pos=Vec2(400, 400),
+                                   anchor=AnchorType.CENTER,
+                                   on_click=self.handle_new_game)
+        self.btn_quit = Button("Quit", color=(255, 0, 0), size=30, pos=Vec2(
+            400, 450), anchor=AnchorType.CENTER, on_click=self.exit_game)
 
     def osbcuring(self):
 

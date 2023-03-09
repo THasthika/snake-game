@@ -8,6 +8,7 @@ from util import Vec2
 
 from config import WINDOW_HEIGHT, WINDOW_WIDTH
 
+
 class PauseGameScene(Scene):
 
     def __init__(self, game_ref: GameScene):
@@ -26,9 +27,17 @@ class PauseGameScene(Scene):
 
     def setup(self):
 
-        self.title = Text("Game Paused", color=(0, 0, 255), size=50, pos=Vec2(400, 200), anchor=AnchorType.CENTER)
-        self.btn_resume = Button("Resume", size=30, pos=Vec2(400, 400), color=(0, 255, 0), anchor=AnchorType.CENTER, on_click=self.on_resume)
-        self.btn_quit = Button("Quit", size=30, pos=Vec2(400, 450), color=(255, 0, 0), anchor=AnchorType.CENTER, on_click=self.on_quit)
+        self.title = Text("Game Paused",
+                          color=(0, 0, 255), size=50, pos=Vec2(400, 200),
+                          anchor=AnchorType.CENTER)
+        self.btn_resume = Button("Resume", size=30, pos=Vec2(400, 400),
+                                 color=(0, 255, 0),
+                                 anchor=AnchorType.CENTER,
+                                 on_click=self.on_resume)
+        self.btn_quit = Button("Quit", size=30, pos=Vec2(400, 450),
+                               color=(255, 0, 0),
+                               anchor=AnchorType.CENTER,
+                               on_click=self.on_quit)
 
     def osbcuring(self):
         pass
@@ -45,16 +54,17 @@ class PauseGameScene(Scene):
         if self.btn_quit.handle_event(event):
             return True
 
-
     def update(self, dt):
         pass
 
     def render(self, display: pygame.Surface):
-        
-        ## render alpha channeled rect
-        s = pygame.Surface((WINDOW_WIDTH,WINDOW_HEIGHT), pygame.SRCALPHA)   # per-pixel alpha
-        s.fill((100,100,100,200))                         # notice the alpha value in the color
-        display.blit(s, (0,0))
+
+        # render alpha channeled rect
+        s = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT),
+                           pygame.SRCALPHA)   # per-pixel alpha
+        # notice the alpha value in the color
+        s.fill((100, 100, 100, 200))
+        display.blit(s, (0, 0))
 
         self.title.render(display)
 

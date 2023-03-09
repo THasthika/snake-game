@@ -6,17 +6,18 @@ from util import Vec2, draw_cell
 
 from direction import Direction
 
+
 class Snake:
 
     body: List[Vec2] = []
-    speed = 30 # units per second
+    speed = 30  # units per second
     prev_move = 0
     top_speed = 40
 
     prev_direction: Direction
 
     def __init__(self):
-        
+
         x_rand = random.randint(0, max_x_units - 1)
         y_rand = random.randint(0, max_y_units - 1)
 
@@ -33,8 +34,9 @@ class Snake:
 
     def set_direction(self, dir: Direction):
 
-        ## check if direction change is possible
-        if self.direction == Direction.get_opposite(dir) or self.prev_direction == Direction.get_opposite(dir):
+        # check if direction change is possible
+        if self.direction == Direction.get_opposite(dir) or\
+                self.prev_direction == Direction.get_opposite(dir):
             return
 
         self.direction = dir
@@ -74,7 +76,7 @@ class Snake:
             d_change = dir.get_vector()
 
         for i in range(len(self.body) - 1, 0, -1):
-            ## set body of i to i - 1
+            # set body of i to i - 1
             self.body[i] = self.body[i-1]
 
         self.body[0] += d_change
@@ -86,7 +88,7 @@ class Snake:
             head_x = max_x_units
         elif head_x >= max_x_units:
             head_x = 0
-        
+
         if head_y < 0:
             head_y = max_y_units
         elif head_y >= max_y_units:
@@ -100,7 +102,7 @@ class Snake:
 
         if self.body[0].distanceL1(fruit.pos) == 0:
             return True
-        
+
         return False
 
     def increment_speed(self):

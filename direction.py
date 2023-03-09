@@ -2,6 +2,7 @@ from enum import Enum
 
 from util import Vec2
 
+
 class Direction(Enum):
     NORTH = 1
     SOUTH = 2

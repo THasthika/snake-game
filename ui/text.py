@@ -4,9 +4,12 @@ from ui.anchor_type import AnchorType
 from ui.font_manager import FontManager
 from util import Vec2
 
+
 class Text():
 
-    def __init__(self, text: str, font = None, size = 30, pos: Vec2 = Vec2(0, 0), color = TEXT_COLOR, anchor = AnchorType.CENTER):
+    def __init__(self, text: str,
+                 font=None, size=30, pos: Vec2 = Vec2(0, 0),
+                 color=TEXT_COLOR, anchor=AnchorType.CENTER):
         font = font if font is not None else DEFAULT_FONT
         self.size = size
         self.pos = pos
@@ -28,7 +31,6 @@ class Text():
             self.rect.bottomleft = (self.pos.x, self.pos.y)
         elif self.anchor == AnchorType.BOTTOM_RIGHT:
             self.rect.bottomright = (self.pos.x, self.pos.y)
-
 
     def update_surface(self):
         self.surface = self.font.render(self.text, True, self.color)

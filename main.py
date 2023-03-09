@@ -1,14 +1,9 @@
 import pygame
-
-import random
-from enum import Enum
-
 from config import WINDOW_HEIGHT, WINDOW_WIDTH, SCREEN_COLOR, FPS
 import scenes
 from scenes.scene_manager import SceneManager
-from ui.font_manager import FontManager
-
 from util import init_fonts
+
 
 pygame.init()
 

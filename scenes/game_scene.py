@@ -1,6 +1,6 @@
 from typing import Optional
 import pygame
-from controllers import Controller, AIControllerV1, AIControllerV2, AIControllerV3, HumanController
+from controllers import Controller, AIControllerV2
 from game_command import CommandType, GameCommand
 
 from gameobjects import Fruit, Snake
@@ -16,6 +16,7 @@ PERSIST_CONTROLLER = True
 
 def create_controller(snake: Snake, fruit: Optional[Fruit]) -> Controller:
     return AIControllerV2(snake, fruit)
+
 
 class GameScene(Scene):
 
@@ -43,7 +44,8 @@ class GameScene(Scene):
             return
 
         if event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE:
-            self.scene_manager.push(scenes.get_scene_cls(scenes.PAUSE_GAME_SCENE)(self))
+            self.scene_manager.\
+                push(scenes.get_scene_cls(scenes.PAUSE_GAME_SCENE)(self))
 
         c = self.controller.handle_event(event)
         if c is not None:
@@ -92,7 +94,8 @@ class GameScene(Scene):
 
         self.fruit.draw(display)
 
-        draw_text(display, "Score: {}".format(self.score), WINDOW_WIDTH - 100, 50)
+        draw_text(display, "Score: {}".
+                  format(self.score), WINDOW_WIDTH - 100, 50)
 
     def revealed(self):
 

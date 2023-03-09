@@ -1,5 +1,6 @@
 import pygame
 
+
 class SpriteSheet:
 
     def __init__(self, filename):
@@ -10,7 +11,7 @@ class SpriteSheet:
             print(('Unable to load spritesheet image:', filename))
             raise SystemExit(message)
         
-    def image_at(self, rectangle, colorkey = None):
+    def image_at(self, rectangle, colorkey=None):
         """
         rectangle: (x, y, x-offset, y-offset)
         """

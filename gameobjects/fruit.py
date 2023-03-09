@@ -2,6 +2,7 @@ import random
 from config import max_x_units, max_y_units, FRUIT_COLOR
 from util import Vec2, draw_cell
 
+
 class Fruit():
 
     def check_overlap(p, search_pos):
@@ -29,5 +30,5 @@ class Fruit():
         draw_cell(display, self.pos, FRUIT_COLOR)
 
     def get_position(self):
-        
+
         return self.pos

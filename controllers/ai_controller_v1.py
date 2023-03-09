@@ -1,13 +1,11 @@
 
-from typing import Optional
-
 import pygame
+from typing import Optional
 from controllers.controller import Controller
-
 from direction import Direction
 from game_command import CommandType, GameCommand
-
 from gameobjects import Snake, Fruit
+
 
 class AIControllerV1(Controller):
 
@@ -25,16 +23,16 @@ class AIControllerV1(Controller):
     def set_snake(self, snake):
         self.snake = snake
 
-    ## called on every event
+    # called on every event
     def handle_event(self, _event: pygame.event.Event) -> Optional[GameCommand]:
-        
+
         return None
 
-    ## called on every frame
+    # called on every frame
     def handle_update(self) -> Optional[GameCommand]:
 
         head_pos = self.snake.body[0]
-        snake_direction = self.snake.get_direction()
+        # snake_direction = self.snake.get_direction()
 
         fruit_pos = self.fruit.pos
 
@@ -50,7 +48,6 @@ class AIControllerV1(Controller):
             elif diff.x > 0:
                 return GameCommand(CommandType.DIRECTION, Direction.WEST)
 
-
         if abs(diff.y) > 0:
 
             if diff.y < 0:
@@ -59,5 +56,3 @@ class AIControllerV1(Controller):
                 return GameCommand(CommandType.DIRECTION, Direction.NORTH)
 
         return None
-
-

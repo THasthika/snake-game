@@ -1,21 +1,16 @@
-
-import math
-from typing import List, Optional
-
+from typing import Optional
 import pygame
 from controllers.controller import Controller
 from config import max_x_units, max_y_units
-
 from direction import Direction
 from game_command import CommandType, GameCommand
-
 from gameobjects import Snake, Fruit
-from util import Vec2
-
 import numpy as np
-
 import sys
+
+
 np.set_printoptions(threshold=sys.maxsize)
+
 
 class GameState():
 
@@ -27,7 +22,9 @@ class GameState():
     def __str__(self) -> str:
         return "{}\n{}".format(self.board, self.prev_outcome)
 
-## AI with RL
+# AI with RL
+
+
 class AIControllerV3(Controller):
 
     def __init__(self, snake: Snake, fruit: Optional[Fruit] = None):
@@ -71,13 +68,14 @@ class AIControllerV3(Controller):
         game_state = GameState(b, prev_outcome)
         return game_state
 
+    # called on every event
 
-    ## called on every event
-    def handle_event(self, _event: pygame.event.Event) -> Optional[GameCommand]:
-        
+    def handle_event(self, _event: pygame.event.Event)\
+            -> Optional[GameCommand]:
+
         return None
 
-    ## called on every frame
+    # called on every frame
     def handle_update(self) -> Optional[GameCommand]:
 
         game_state = self.get_state()
@@ -85,7 +83,7 @@ class AIControllerV3(Controller):
         print(game_state)
 
         head_pos = self.snake.body[0]
-        snake_direction = self.snake.get_direction()
+        # snake_direction = self.snake.get_direction()
 
         fruit_pos = self.fruit.pos
 
@@ -101,7 +99,6 @@ class AIControllerV3(Controller):
             elif diff.x > 0:
                 return GameCommand(CommandType.DIRECTION, Direction.WEST)
 
-
         if abs(diff.y) > 0:
 
             if diff.y < 0:
@@ -110,5 +107,3 @@ class AIControllerV3(Controller):
                 return GameCommand(CommandType.DIRECTION, Direction.NORTH)
 
         return None
-
-

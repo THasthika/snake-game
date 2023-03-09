@@ -1,14 +1,10 @@
 from typing import Optional
-
 import pygame
 from controllers.controller import Controller
-
 from direction import Direction
 from game_command import CommandType, GameCommand
-
 from gameobjects import Snake, Fruit
 
-from config import max_x_units
 
 class HumanController(Controller):
 
@@ -25,7 +21,7 @@ class HumanController(Controller):
     def set_score(self, score):
         self.score = score
 
-    ## called on every event
+    # called on every event
     def handle_event(self, event: pygame.event.Event) -> Optional[GameCommand]:
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_a:
@@ -37,9 +33,9 @@ class HumanController(Controller):
             if event.key == pygame.K_w:
                 return GameCommand(CommandType.DIRECTION, Direction.NORTH)
 
-    ## called on every frame
+    # called on every frame
     def handle_update(self) -> Optional[GameCommand]:
-        
+
         print(self.snake.body)
 
         return None

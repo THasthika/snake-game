@@ -1,8 +1,7 @@
 from abc import ABC, abstractmethod
-
 import pygame
-
 from scenes.scene_manager import SceneManager
+
 
 class Scene(ABC):
 

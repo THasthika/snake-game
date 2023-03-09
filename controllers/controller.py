@@ -1,9 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Optional
-
 import pygame
-
 from game_command import GameCommand
+
 
 class Controller(ABC):
 
